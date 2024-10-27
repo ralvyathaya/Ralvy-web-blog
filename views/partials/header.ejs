@@ -1,0 +1,19 @@
+<header class="header">
+    <div class="header__logo">
+      <a href="/">NodeJs</a>
+    </div>
+    <nav class="header__nav">
+      <ul class="header__list">
+        <li class="   <%= isActiveRoute('/', currentRoute) %>"><a href="/">Home</a></li>
+        <li class="   <%= isActiveRoute('/about', currentRoute) %>"><a href="/about">About</a></li>
+        <li class="   <%= isActiveRoute('/contact', currentRoute) %>"><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+
+  <div class="header__search">
+    <button class="searchBtn" aria-expanded="false">
+       <p>Search </p> <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </div>
+  
+  </header>
