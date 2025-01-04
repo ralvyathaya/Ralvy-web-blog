@@ -1,7 +1,6 @@
 Simple Web Blog App
 
-This is a basic web blog application built using Node.js and MongoDB as part of a capstone project. It demonstrates the fundamental structure of a blog platform where users can create, view, edit, and delete blog posts.
-Technologies Used
+This is a basic web blog application built using the MERN stack (MongoDB, Express, React, Node.js) as part of a capstone project. It showcases full-stack proficiency, demonstrating the core structure of a blog platform where users can create, view, edit, and delete blog posts.
 
     Node.js: Backend server and application logic.
     MongoDB: Database for storing blog post data.
