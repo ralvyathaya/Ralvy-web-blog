@@ -1,6 +1,7 @@
-const express = require("express")
+import express from "express"
+import Post from "../models/Post.js"
+
 const router = express.Router()
-const Post = require("../models/Post")
 
 // GET /api/posts
 router.get("/posts", async (req, res) => {
@@ -63,4 +64,4 @@ router.post("/search", async (req, res) => {
   }
 })
 
-module.exports = router
+export default router

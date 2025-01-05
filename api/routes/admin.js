@@ -1,12 +1,13 @@
-const express = require("express")
+import express from "express"
+import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+import Post from "../models/Post.js"
+import User from "../models/User.js"
+
 const router = express.Router()
-const Post = require("../models/Post")
-const User = require("../models/User")
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
 const jwtSecret = process.env.JWT_SECRET
 
-//Middleware
+// Middleware
 const authMiddleware = (req, res, next) => {
   const token = req.cookies.token
 
@@ -142,4 +143,4 @@ router.post("/logout", (req, res) => {
   res.json({ message: "Logged out successfully" })
 })
 
-module.exports = router
+export default router

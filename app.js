@@ -1,13 +1,18 @@
-require("dotenv").config()
+import "dotenv/config"
+import express from "express"
+import methodOverride from "method-override"
+import cookieParser from "cookie-parser"
+import session from "express-session"
+import MongoStore from "connect-mongo"
+import path from "path"
+import { fileURLToPath } from "url"
 
-const express = require("express")
-const methodOverride = require("method-override")
-const cookieParser = require("cookie-parser")
-const session = require("express-session")
-const MongoStore = require("connect-mongo")
-const path = require("path")
+import connectDB from "./api/config/db.js"
+import mainRoutes from "./api/routes/main.js"
+import adminRoutes from "./api/routes/admin.js"
 
-const connectDB = require("./api/config/db")
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -33,8 +38,8 @@ app.use(
 )
 
 // API Routes
-app.use("/api", require("./api/routes/main"))
-app.use("/api", require("./api/routes/admin"))
+app.use("/api", mainRoutes)
+app.use("/api", adminRoutes)
 
 // Serve static files from the React app in production
 if (process.env.NODE_ENV === "production") {
