@@ -1,8 +1,8 @@
-import express from "express"
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
-import Post from "../models/Post.js"
-import User from "../models/User.js"
+const express = require("express")
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
+const Post = require("../models/Post")
+const User = require("../models/User")
 
 const router = express.Router()
 const jwtSecret = process.env.JWT_SECRET
@@ -143,4 +143,4 @@ router.post("/logout", (req, res) => {
   res.json({ message: "Logged out successfully" })
 })
 
-export default router
+module.exports = router

@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "A MERN stack blog application",
   "main": "app.js",
-  "type": "module",
   "scripts": {
     "start": "node app.js",
     "dev:server": "nodemon app.js",
@@ -11,7 +10,8 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "seed": "node api/seed.js"
   },
   "keywords": [],
   "author": "",
