@@ -39,7 +39,7 @@ const Contact = () => {
             <p>
               <strong>Email:</strong>{' '}
               <a href="mailto:ralvyathayazahran@gmail.com" className="text-blue-600 dark:text-blue-400">
-                ralvy@example.com
+                ralvyathayazahran@gmail.com
               </a>
             </p>
             <p>
@@ -50,7 +50,7 @@ const Contact = () => {
                 rel="noopener noreferrer"
                 className="text-blue-600 dark:text-blue-400"
               >
-                github.com/ralvy
+                github.com/ralvyathaya
               </a>
             </p>
           </div>
