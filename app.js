@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser")
 const session = require("express-session")
 const MongoStore = require("connect-mongo")
 const path = require("path")
+const cors = require("cors")
 
 // Import custom modules for database connection and routes
 const connectDB = require("./api/config/db")
@@ -22,20 +23,26 @@ const PORT = process.env.PORT || 5000
 connectDB()
 
 // Middleware setup
+app.use(cors()) // Enable CORS for all routes
 app.use(express.urlencoded({ extended: true })) // Parse URL-encoded bodies
 app.use(express.json()) // Parse JSON bodies
 app.use(cookieParser()) // Parse Cookie header and populate req.cookies
 app.use(methodOverride("_method")) // Override HTTP methods
 
+// Session configuration
 app.use(
   session({
-    secret: "keyboard cat", // Session secret for signing the session ID cookie
-    resave: false, // Don't save session if unmodified
-    saveUninitialized: true, // Save new sessions
+    secret: process.env.JWT_SECRET || "keyboard cat",
+    resave: false,
+    saveUninitialized: true,
     store: MongoStore.create({
-      // Configure session store to use MongoDB
       mongoUrl: process.env.MONGODB_URI,
     }),
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
   })
 )
 
@@ -43,22 +50,30 @@ app.use(
 app.use("/api", mainRoutes)
 app.use("/api", adminRoutes)
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).json({
+    message: "Something went wrong!",
+    error: process.env.NODE_ENV === "development" ? err.message : undefined,
+  })
+})
+
 // Serve static files from React app in production environment
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "dist")))
 
   app.get("*", (req, res) => {
-    // Catch-all route for serving the React app
     res.sendFile(path.join(__dirname, "dist/index.html"))
+  })
+} else {
+  // Development environment - handle SPA routing
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"))
   })
 }
 
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
-})
-
-// Route for serving the main page
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"))
 })
