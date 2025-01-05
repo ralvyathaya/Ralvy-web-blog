@@ -15,7 +15,11 @@ const BlogCard = ({ post }) => {
             className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100"
           />
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            {new Date(post.createdAt).toLocaleDateString()}
+            {new Date(post.createdAt).toLocaleDateString('en-GB', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            })}
           </span>
         </div>
         
