@@ -38,14 +38,14 @@ const Contact = () => {
           <div className="flex flex-col space-y-4 text-gray-600 dark:text-gray-300">
             <p>
               <strong>Email:</strong>{' '}
-              <a href="mailto:ralvy@example.com" className="text-blue-600 dark:text-blue-400">
+              <a href="mailto:ralvyathayazahran@gmail.com" className="text-blue-600 dark:text-blue-400">
                 ralvy@example.com
               </a>
             </p>
             <p>
               <strong>GitHub:</strong>{' '}
               <a
-                href="https://github.com/ralvy"
+                href="https://github.com/ralvyathaya"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 dark:text-blue-400"
