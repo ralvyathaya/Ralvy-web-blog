@@ -43,7 +43,7 @@ const Home = () => {
       <section className="mb-12 flex flex-col md:flex-row items-center justify-center md:justify-between bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <div className="md:w-1/4 mb-6 md:mb-0">
           <img
-            src="/profile-image.jpg"
+            src="/images/ai-profile.jpg"
             alt="Ralvy"
             className="rounded-full w-32 h-32 object-cover mx-auto shadow-lg"
           />
