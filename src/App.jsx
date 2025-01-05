@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Post from './pages/Post';
+import Login from './pages/Login';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/post/:id" element={<Post />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
             </Routes>
           </main>
         </Router>
