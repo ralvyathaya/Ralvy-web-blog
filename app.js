@@ -1,21 +1,21 @@
 require("dotenv").config()
 
 const express = require("express")
-const expressLayout = require("express-ejs-layouts")
 const methodOverride = require("method-override")
 const cookieParser = require("cookie-parser")
 const session = require("express-session")
 const MongoStore = require("connect-mongo")
+const path = require("path")
 
-const connectDB = require("./server/config/db")
-const { isActiveRoute } = require("./server/helpers/routeHelpers")
+const connectDB = require("./api/config/db")
 
 const app = express()
-const PORT = 5000 || process.env.PORT
+const PORT = process.env.PORT || 5000
 
-//connect to DB
+// Connect to DB
 connectDB()
 
+// Middleware
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
@@ -32,27 +32,19 @@ app.use(
   })
 )
 
-app.locals.isActiveRoute = isActiveRoute
+// API Routes
+app.use("/api", require("./api/routes/main"))
+app.use("/api", require("./api/routes/admin"))
 
-//middleware isActiveRoute
-app.use((req, res, next) => {
-  res.locals.isActiveRoute = isActiveRoute
-  res.locals.currentRoute = req.path
-  next()
-})
+// Serve static files from the React app in production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "dist")))
 
-//public folder
-app.use(express.static("public"))
-app.use("/node_modules", express.static("node_modules"))
-
-//templating engine
-app.use(expressLayout)
-app.set("layout", "./layouts/main")
-app.set("view engine", "ejs")
-
-app.use("/", require("./server/routes/main"))
-app.use("/", require("./server/routes/admin"))
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "dist/index.html"))
+  })
+}
 
 app.listen(PORT, () => {
-  console.log(`App listening on port: ${PORT}`)
+  console.log(`Server is running on port ${PORT}`)
 })

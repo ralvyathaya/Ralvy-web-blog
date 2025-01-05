@@ -9,9 +9,13 @@ const PostSchema = new Schema({
     type: String,
     required: true,
   },
+  category: {
+    type: String,
+    default: "Uncategorized",
+  },
   author: {
     type: String,
-    required: true,
+    default: "Anonymous",
   },
   createdAt: {
     type: Date,
@@ -23,5 +27,4 @@ const PostSchema = new Schema({
   },
 })
 
-const Post = mongoose.model("Post", PostSchema)
-module.exports = Post
+module.exports = mongoose.model("Post", PostSchema)
