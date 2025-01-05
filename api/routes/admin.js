@@ -24,6 +24,34 @@ const authMiddleware = (req, res, next) => {
   }
 }
 
+// POST /api/admin/change-password
+router.post("/admin/change-password", authMiddleware, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body
+    const user = await User.findById(req.userId)
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" })
+    }
+
+    // Verify current password
+    const isPasswordValid = await bcrypt.compare(currentPassword, user.password)
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Current password is incorrect" })
+    }
+
+    // Hash new password and update
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10)
+    user.password = hashedNewPassword
+    await user.save()
+
+    res.json({ message: "Password changed successfully" })
+  } catch (error) {
+    console.error("Change password error:", error)
+    res.status(500).json({ message: "Failed to change password" })
+  }
+})
+
 // POST /api/login
 router.post("/login", async (req, res) => {
   try {
