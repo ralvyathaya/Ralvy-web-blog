@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import BlogCard from '../components/BlogCard';
 import axios from 'axios';
 
@@ -6,16 +7,17 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [hasMore, setHasMore] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = parseInt(searchParams.get('page')) || 1;
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(`/api/posts?page=${currentPage}`);
-        console.log('Posts response:', response.data); // Debug log
+        console.log('Posts response:', response.data);
         setPosts(response.data.posts || []);
-        setHasMore(response.data.hasNextPage || false);
+        setTotalPages(response.data.totalPages || 1);
       } catch (error) {
         console.error('Error fetching posts:', error);
         setError('Failed to load posts. Please try again later.');
@@ -26,6 +28,113 @@ const Home = () => {
 
     fetchPosts();
   }, [currentPage]);
+
+  const handlePageChange = (page) => {
+    setSearchParams({ page: page.toString() });
+    window.scrollTo(0, 0);
+  };
+
+  const renderPaginationButtons = () => {
+    const buttons = [];
+    const maxButtons = 5; // Maximum number of buttons to show
+    let start = Math.max(1, currentPage - 2);
+    let end = Math.min(totalPages, start + maxButtons - 1);
+
+    if (end - start + 1 < maxButtons) {
+      start = Math.max(1, end - maxButtons + 1);
+    }
+
+    // Previous button
+    buttons.push(
+      <button
+        key="prev"
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className={`px-3 py-1 rounded-lg ${
+          currentPage === 1
+            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+            : 'bg-blue-600 text-white hover:bg-blue-700'
+        } transition duration-200`}
+      >
+        Previous
+      </button>
+    );
+
+    // First page
+    if (start > 1) {
+      buttons.push(
+        <button
+          key={1}
+          onClick={() => handlePageChange(1)}
+          className="px-3 py-1 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition duration-200"
+        >
+          1
+        </button>
+      );
+      if (start > 2) {
+        buttons.push(
+          <span key="dots1" className="px-2">
+            ...
+          </span>
+        );
+      }
+    }
+
+    // Page buttons
+    for (let i = start; i <= end; i++) {
+      buttons.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={`px-3 py-1 rounded-lg ${
+            currentPage === i
+              ? 'bg-blue-800 text-white'
+              : 'bg-blue-600 text-white hover:bg-blue-700'
+          } transition duration-200`}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    // Last page
+    if (end < totalPages) {
+      if (end < totalPages - 1) {
+        buttons.push(
+          <span key="dots2" className="px-2">
+            ...
+          </span>
+        );
+      }
+      buttons.push(
+        <button
+          key={totalPages}
+          onClick={() => handlePageChange(totalPages)}
+          className="px-3 py-1 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition duration-200"
+        >
+          {totalPages}
+        </button>
+      );
+    }
+
+    // Next button
+    buttons.push(
+      <button
+        key="next"
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className={`px-3 py-1 rounded-lg ${
+          currentPage === totalPages
+            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+            : 'bg-blue-600 text-white hover:bg-blue-700'
+        } transition duration-200`}
+      >
+        Next
+      </button>
+    );
+
+    return buttons;
+  };
 
   if (error) {
     return (
@@ -78,14 +187,9 @@ const Home = () => {
             )}
           </div>
           
-          {hasMore && (
-            <div className="mt-8 text-center">
-              <button
-                onClick={() => setCurrentPage(prev => prev + 1)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
-              >
-                Load More
-              </button>
+          {totalPages > 1 && (
+            <div className="mt-8 flex justify-center space-x-2">
+              {renderPaginationButtons()}
             </div>
           )}
         </>

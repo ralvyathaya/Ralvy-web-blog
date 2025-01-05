@@ -7,6 +7,7 @@ import Contact from './pages/Contact';
 import Post from './pages/Post';
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
+import EditPost from './pages/EditPost';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path="/post/:id" element={<Post />} />
               <Route path="/login" element={<Login />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/posts/edit/:id" element={<EditPost />} />
             </Routes>
           </main>
         </Router>
