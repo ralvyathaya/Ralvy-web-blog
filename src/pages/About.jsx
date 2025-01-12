@@ -26,8 +26,8 @@ const About = () => {
           <ul className="list-disc pl-6 mb-4">
             <li>Frontend: React, JavaScript, HTML5, CSS3, Tailwind CSS</li>
             <li>Backend: Node.js, Express.js, MongoDB</li>
-            <li>Tools: Git, VS Code, Docker</li>
-            <li>Other: RESTful APIs, GraphQL, TypeScript</li>
+            <li>Tools: Git, VS Code</li>
+            <li>Other: RESTful APIs, TypeScript</li>
           </ul>
           
           <p className="mt-6">
